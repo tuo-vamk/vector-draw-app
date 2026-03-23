@@ -45,6 +45,7 @@ classDiagram
         -Point start
         -Point end
         +Line(Point, Point, String, boolean)
+        +getLength() double
         +draw()
         +area() double
     }
@@ -60,7 +61,7 @@ classDiagram
 
     class App {
         +main(String[])$
-        +CreateTestData(ArrayList~Shape~)$
+        +createTestData(ArrayList~Shape~)$
     }
 
     class Point {

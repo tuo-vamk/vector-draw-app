@@ -8,7 +8,7 @@ public class App {
         Canvas canvas = new Canvas();
 
         // 1) Generate test data into the canvas' shape list
-        CreateTestData(canvas.getShapes());
+        createTestData(canvas.getShapes());
 
         // 2) Draw all shapes
         System.out.println("== Drawing all shapes ==");
@@ -25,13 +25,22 @@ public class App {
         }
         System.out.println("Total area from Main(): " + totalArea);
         System.out.println("Total area from Canvas: " + canvas.totalArea());
+
+        // 4) Loop through canvas and print lengt of line if shape is Line
+        System.out.println("\n== Line lengths ==");
+        for (Shape s : canvas.getShapes()) {
+            if (s instanceof Line) {
+                Line line = (Line) s;
+                System.out.println("Line length: " + line.length());
+            }
+        }
     }
 
     /**
      * Populates the provided List<Shape> with some test data.
      * This keeps test data creation separate from main logic.
      */
-    public static void CreateTestData(ArrayList<Shape> shapes) {
+    public static void createTestData(ArrayList<Shape> shapes) {
         // Triangle
         Triangle t = new Triangle(3.0, 4.0, "red", false);
         shapes.add(t);
@@ -44,8 +53,17 @@ public class App {
         Circle c = new Circle(1.5, "green", true);
         shapes.add(c);
 
-        // Line
-        Line l = new Line(new java.awt.Point(0, 0), new java.awt.Point(10, 10), "black", false);
-        shapes.add(l);
+        // Lines
+        Line l1 = new Line(new java.awt.Point(0, 0), new java.awt.Point(10, 10), "black", false);
+        shapes.add(l1);
+
+        Line l2 = new Line(new java.awt.Point(5, 0), new java.awt.Point(5, 20), "purple", false);
+        shapes.add(l2);
+
+        Line l3 = new Line(new java.awt.Point(-3, 4), new java.awt.Point(9, 4), "orange", false);
+        shapes.add(l3);
+
+        Line l4 = new Line(new java.awt.Point(0, 0), new java.awt.Point(3, 4), "gray", true);
+        shapes.add(l4);
     }
 }
