@@ -2,7 +2,7 @@ package com.vectordraw;
 
 import java.awt.Point;
 
-public class Line extends Shape {
+public class Line extends Shape implements CanCalculateLength {
         private Point start;
         private Point end;
 

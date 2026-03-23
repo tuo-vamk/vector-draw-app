@@ -29,9 +29,8 @@ public class App {
         // 4) Loop through canvas and print lengt of line if shape is Line
         System.out.println("\n== Line lengths ==");
         for (Shape s : canvas.getShapes()) {
-            if (s instanceof Line) {
-                Line line = (Line) s;
-                System.out.println("Line length: " + line.calculateLength());
+            if (s instanceof CanCalculateLength hasLength) {
+                System.out.println("Line length: " + hasLength.calculateLength());
             }
         }
     }

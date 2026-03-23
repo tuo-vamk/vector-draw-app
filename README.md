@@ -41,6 +41,11 @@ classDiagram
         +area() double
     }
 
+    class CanCalculateLength {
+        <<interface>>
+        +calculateLength() double
+    }
+
     class Line {
         -Point start
         -Point end
@@ -74,6 +79,7 @@ classDiagram
     Shape <|-- Rectangle
     Shape <|-- Circle
     Shape <|-- Line
+    CanCalculateLength <|.. Line : implements
     Canvas "1" o-- "0..*" Shape : contains
     App ..> Canvas : uses
     Line --> Point : start
@@ -84,6 +90,7 @@ classDiagram
 - **Triangle / Rectangle / Circle / Line** — concrete subclasses that each implement their own `draw()` and `area()`.
 - **Canvas** — holds a list of shapes; can draw all of them and calculate the total area.
 - **App** — entry point; creates test data and exercises the canvas.
+- **CanCalculateLength** — interface declaring `calculateLength()`; implemented by `Line`.
 - **Point** — `java.awt.Point`; holds integer `x`/`y` coordinates used by `Line`.
 
 ---
