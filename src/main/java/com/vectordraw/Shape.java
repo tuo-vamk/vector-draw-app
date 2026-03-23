@@ -1,6 +1,6 @@
 package com.vectordraw;
 
-public class Shape {
+public abstract class Shape {
 
     private String color;
     private boolean transparent;
@@ -26,13 +26,7 @@ public class Shape {
         this.transparent = transparent;
     }
 
-    public void draw()
-    {
-        System.out.printf("Shape is abstract thing, so not able to draw it.");
-    }
+    public abstract void draw();
 
-    public double area()
-    {
-        return -1;
-    }
+    public abstract double area();
 }
