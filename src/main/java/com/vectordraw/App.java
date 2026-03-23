@@ -26,7 +26,7 @@ public class App {
         System.out.println("Total area from Main(): " + totalArea);
         System.out.println("Total area from Canvas: " + canvas.totalArea());
 
-        // 4) Loop through canvas and print lengt of line if shape is Line
+        // 4) Loop through canvas and print length if shape can calculate it
         System.out.println("\n== Line lengths ==");
         for (Shape s : canvas.getShapes()) {
             if (s instanceof CanCalculateLength hasLength) {
