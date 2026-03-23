@@ -45,7 +45,7 @@ classDiagram
         -Point start
         -Point end
         +Line(Point, Point, String, boolean)
-        +getLength() double
+        +calculateLength() double
         +draw()
         +area() double
     }
