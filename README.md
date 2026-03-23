@@ -4,20 +4,86 @@ A simple object-oriented Java application demonstrating inheritance and polymorp
 
 ## Class Structure
 
-```
-Shape (abstract)
-├── Triangle
-├── Rectangle
-└── Circle
+```mermaid
+classDiagram
+    class Shape {
+        <<abstract>>
+        -String color
+        -boolean transparent
+        +getColor() String
+        +setColor(String)
+        +isTransparent() boolean
+        +setTransparent(boolean)
+        +draw()*
+        +area()* double
+    }
 
-Canvas  ──aggregates──►  Shape (0..*)
-App     ──uses──────────► Canvas
+    class Triangle {
+        -double base
+        -double height
+        +Triangle(double, double, String, boolean)
+        +draw()
+        +area() double
+    }
+
+    class Rectangle {
+        -double width
+        -double height
+        +Rectangle(double, double, String, boolean)
+        +draw()
+        +area() double
+    }
+
+    class Circle {
+        -double radius
+        +Circle(double, String, boolean)
+        +draw()
+        +area() double
+    }
+
+    class Line {
+        -Point start
+        -Point end
+        +Line(Point, Point, String, boolean)
+        +draw()
+        +area() double
+    }
+
+    class Canvas {
+        -ArrayList~Shape~ shapes
+        +getShapes() ArrayList~Shape~
+        +addShape(Shape)
+        +removeShape(Shape)
+        +drawAll()
+        +totalArea() double
+    }
+
+    class App {
+        +main(String[])$
+        +CreateTestData(ArrayList~Shape~)$
+    }
+
+    class Point {
+        <<java.awt>>
+        +int x
+        +int y
+    }
+
+    Shape <|-- Triangle
+    Shape <|-- Rectangle
+    Shape <|-- Circle
+    Shape <|-- Line
+    Canvas "1" o-- "0..*" Shape : contains
+    App ..> Canvas : uses
+    Line --> Point : start
+    Line --> Point : end
 ```
 
 - **Shape** — abstract base class with `color` and `transparent` fields; declares abstract `draw()` and `area()` methods.
-- **Triangle / Rectangle / Circle** — concrete subclasses that each implement their own `draw()` and `area()`.
+- **Triangle / Rectangle / Circle / Line** — concrete subclasses that each implement their own `draw()` and `area()`.
 - **Canvas** — holds a list of shapes; can draw all of them and calculate the total area.
 - **App** — entry point; creates test data and exercises the canvas.
+- **Point** — `java.awt.Point`; holds integer `x`/`y` coordinates used by `Line`.
 
 ---
 

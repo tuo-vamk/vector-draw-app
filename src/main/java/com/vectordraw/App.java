@@ -41,5 +41,9 @@ public class App {
         // Circle
         Circle c = new Circle(1.5, "green", true);
         shapes.add(c);
+
+        // Line
+        Line l = new Line(new java.awt.Point(0, 0), new java.awt.Point(10, 10), "black", false);
+        shapes.add(l);
     }
 }
