@@ -31,7 +31,7 @@ public class App {
         for (Shape s : canvas.getShapes()) {
             if (s instanceof Line) {
                 Line line = (Line) s;
-                System.out.println("Line length: " + line.length());
+                System.out.println("Line length: " + line.getLength());
             }
         }
     }
