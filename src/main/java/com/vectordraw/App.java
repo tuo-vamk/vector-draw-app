@@ -41,9 +41,5 @@ public class App {
         // Circle
         Circle c = new Circle(1.5, "green", true);
         shapes.add(c);
-
-        // Shape
-        Shape s = new Shape("green", true);
-        shapes.add(s);
     }
 }
