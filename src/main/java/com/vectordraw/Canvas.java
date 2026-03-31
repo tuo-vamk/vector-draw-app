@@ -4,33 +4,33 @@ import java.util.ArrayList;
 
 public class Canvas {
 
-    private ArrayList<Shape> shapes;
+    private ArrayList<Drawable> shapes;
 
     public Canvas() {
         shapes = new ArrayList<>();
     }
 
-    public ArrayList<Shape> getShapes() {
+    public ArrayList<Drawable> getShapes() {
         return shapes;
     }
 
-    public void addShape(Shape shape) {
+    public void addShape(Drawable shape) {
         shapes.add(shape);
     }
 
-    public void removeShape(Shape shape) {
+    public void removeShape(Drawable shape) {
         shapes.remove(shape);
     }
 
     public void drawAll() {
-        for (Shape shape : shapes) {
+        for (Drawable shape : shapes) {
             shape.draw();
         }
     }
 
     public double totalArea() {
         double total = 0;
-        for (Shape shape : shapes) {
+        for (Drawable shape : shapes) {
             if (shape instanceof CanCalculateArea) {
                 total += ((CanCalculateArea) shape).calculateArea();
             }

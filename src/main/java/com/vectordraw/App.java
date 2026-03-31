@@ -17,7 +17,7 @@ public class App {
         // 3) Loop through canvas and print subtype + area for each shape
         System.out.println("\n== Shape types and areas ==");
         double totalArea = 0;
-        for (Shape s : canvas.getShapes()) {
+        for (Drawable s : canvas.getShapes()) {
             if (s instanceof CanCalculateArea) {
                 double area = ((CanCalculateArea) s).calculateArea();
                 System.out.println(s.getClass().getSimpleName() + " area: " + area);
@@ -29,7 +29,7 @@ public class App {
 
         // 4) Loop through canvas and print length if shape can calculate it
         System.out.println("\n== Lengths (CanCalculateLength) ==");
-        for (Shape s : canvas.getShapes()) {
+        for (Drawable s : canvas.getShapes()) {
             if (s instanceof CanCalculateLength) {
                 CanCalculateLength hasLength = (CanCalculateLength) s;
                 System.out.println(s.getClass().getSimpleName() + " length: " + hasLength.calculateLength());
@@ -41,7 +41,7 @@ public class App {
      * Populates the provided List<Shape> with some test data.
      * This keeps test data creation separate from main logic.
      */
-    public static void createTestData(ArrayList<Shape> shapes) {
+    public static void createTestData(ArrayList<Drawable> shapes) {
         // Triangle
         Triangle t = new Triangle(3.0, 4.0, "red", false);
         shapes.add(t);

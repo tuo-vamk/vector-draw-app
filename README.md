@@ -6,6 +6,11 @@ A simple object-oriented Java application demonstrating inheritance and polymorp
 
 ```mermaid
 classDiagram
+    class Drawable {
+        <<interface>>
+        +draw()
+    }
+
     class Shape {
         <<abstract>>
         -String color
@@ -67,17 +72,17 @@ classDiagram
     }
 
     class Canvas {
-        -ArrayList~Shape~ shapes
-        +getShapes() ArrayList~Shape~
-        +addShape(Shape)
-        +removeShape(Shape)
+        -ArrayList~Drawable~ shapes
+        +getShapes() ArrayList~Drawable~
+        +addShape(Drawable)
+        +removeShape(Drawable)
         +drawAll()
         +totalArea() double
     }
 
     class App {
         +main(String[])$
-        +createTestData(ArrayList~Shape~)$
+        +createTestData(ArrayList~Drawable~)$
     }
 
     class Point {
@@ -86,6 +91,7 @@ classDiagram
         +int y
     }
 
+    Drawable <|.. Shape : implements
     Shape <|-- Triangle
     Shape <|-- Rectangle
     Shape <|-- Circle
@@ -96,17 +102,18 @@ classDiagram
     CanCalculateArea <|.. Circle : implements
     CanCalculateLength <|.. Line : implements
     CanCalculateLength <|.. Curve : implements
-    Canvas "1" o-- "0..*" Shape : contains
+    Canvas "1" o-- "0..*" Drawable : contains
     App ..> Canvas : uses
     Line --> Point : start
     Line --> Point : end
 ```
 
-- **Shape** — abstract base class with `color` and `transparent` fields; declares only abstract `draw()`. No `area()` — not all shapes have area.
+- **Drawable** — interface declaring `draw()`; the abstraction `Canvas` and `App` depend on (DIP). `Shape` implements it.
+- **Shape** — abstract base class with `color` and `transparent` fields; implements `Drawable`, keeps `draw()` abstract. No `area()` — not all shapes have area.
 - **Triangle / Rectangle / Circle** — concrete subclasses that implement `draw()` and `CanCalculateArea`.
 - **Line / Curve** — concrete subclasses that implement `draw()` and `CanCalculateLength`. No area.
-- **Canvas** — holds a list of shapes; can draw all of them and calculate total area via `instanceof CanCalculateArea`.
-- **App** — entry point; creates test data and exercises the canvas.
+- **Canvas** — holds `ArrayList<Drawable>`; depends only on the `Drawable` abstraction (DIP). Draws all items and calculates total area via `instanceof CanCalculateArea`.
+- **App** — entry point; works with `ArrayList<Drawable>` — decoupled from `Shape`.
 - **CanCalculateArea** — interface declaring `calculateArea()`; implemented by `Triangle`, `Rectangle`, and `Circle` (ISP: only shapes that actually have area).
 - **Curve** — concrete subclass of `Shape` that also implements `CanCalculateLength`; represents a circular arc with `radius` (float) and `angle` (int, degrees). `calculateLength()` returns `2 * π * r * (angle / 360)`.
 - **CanCalculateLength** — interface declaring `calculateLength()`; implemented by `Line` and `Curve`.

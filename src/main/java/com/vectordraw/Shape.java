@@ -1,6 +1,6 @@
 package com.vectordraw;
 
-public abstract class Shape {
+public abstract class Shape implements Drawable {
 
     private String color;
     private boolean transparent;
