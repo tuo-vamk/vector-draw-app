@@ -55,6 +55,15 @@ classDiagram
         +area() double
     }
 
+    class Curve {
+        -float radius
+        -int angle
+        +Curve(float, int, String, boolean)
+        +calculateLength() double
+        +draw()
+        +area() double
+    }
+
     class Canvas {
         -ArrayList~Shape~ shapes
         +getShapes() ArrayList~Shape~
@@ -79,7 +88,9 @@ classDiagram
     Shape <|-- Rectangle
     Shape <|-- Circle
     Shape <|-- Line
+    Shape <|-- Curve
     CanCalculateLength <|.. Line : implements
+    CanCalculateLength <|.. Curve : implements
     Canvas "1" o-- "0..*" Shape : contains
     App ..> Canvas : uses
     Line --> Point : start
@@ -90,7 +101,8 @@ classDiagram
 - **Triangle / Rectangle / Circle / Line** — concrete subclasses that each implement their own `draw()` and `area()`.
 - **Canvas** — holds a list of shapes; can draw all of them and calculate the total area.
 - **App** — entry point; creates test data and exercises the canvas.
-- **CanCalculateLength** — interface declaring `calculateLength()`; implemented by `Line`.
+- **Curve** — concrete subclass of `Shape` that also implements `CanCalculateLength`; represents a circular arc with `radius` (float) and `angle` (int, degrees). `calculateLength()` returns `2 * π * r * (angle / 360)`.
+- **CanCalculateLength** — interface declaring `calculateLength()`; implemented by `Line` and `Curve`.
 - **Point** — `java.awt.Point`; holds integer `x`/`y` coordinates used by `Line`.
 
 ---
