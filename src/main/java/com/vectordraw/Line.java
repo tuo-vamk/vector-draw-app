@@ -22,9 +22,4 @@ public class Line extends Shape implements CanCalculateLength {
     public void draw() {
         System.out.println("Drawing Line..");
     }
-
-    @Override
-    public double area() {
-        return -1;
-    }
 }

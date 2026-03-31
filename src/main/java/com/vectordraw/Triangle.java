@@ -1,6 +1,6 @@
 package com.vectordraw;
 
-public class Triangle extends Shape {
+public class Triangle extends Shape implements CanCalculateArea {
 
     private double base;
     private double height;
@@ -17,7 +17,7 @@ public class Triangle extends Shape {
     }
 
     @Override
-    public double area() {
+    public double calculateArea() {
         return 0.5 * base * height;
     }
 }

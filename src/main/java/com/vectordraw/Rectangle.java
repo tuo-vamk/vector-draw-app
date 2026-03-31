@@ -1,6 +1,6 @@
 package com.vectordraw;
 
-public class Rectangle extends Shape {
+public class Rectangle extends Shape implements CanCalculateArea {
 
     private double width;
     private double height;
@@ -17,7 +17,7 @@ public class Rectangle extends Shape {
     }
 
     @Override
-    public double area() {
+    public double calculateArea() {
         return width * height;
     }
 }

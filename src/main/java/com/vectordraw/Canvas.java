@@ -31,8 +31,8 @@ public class Canvas {
     public double totalArea() {
         double total = 0;
         for (Shape shape : shapes) {
-            if(shape.area() > 0) {
-                total += shape.area();
+            if (shape instanceof CanCalculateArea) {
+                total += ((CanCalculateArea) shape).calculateArea();
             }
         }
         return total;

@@ -15,7 +15,11 @@ classDiagram
         +isTransparent() boolean
         +setTransparent(boolean)
         +draw()*
-        +area()* double
+    }
+
+    class CanCalculateArea {
+        <<interface>>
+        +calculateArea() double
     }
 
     class Triangle {
@@ -23,7 +27,7 @@ classDiagram
         -double height
         +Triangle(double, double, String, boolean)
         +draw()
-        +area() double
+        +calculateArea() double
     }
 
     class Rectangle {
@@ -31,14 +35,14 @@ classDiagram
         -double height
         +Rectangle(double, double, String, boolean)
         +draw()
-        +area() double
+        +calculateArea() double
     }
 
     class Circle {
         -double radius
         +Circle(double, String, boolean)
         +draw()
-        +area() double
+        +calculateArea() double
     }
 
     class CanCalculateLength {
@@ -52,7 +56,6 @@ classDiagram
         +Line(Point, Point, String, boolean)
         +calculateLength() double
         +draw()
-        +area() double
     }
 
     class Curve {
@@ -61,7 +64,6 @@ classDiagram
         +Curve(float, int, String, boolean)
         +calculateLength() double
         +draw()
-        +area() double
     }
 
     class Canvas {
@@ -89,6 +91,9 @@ classDiagram
     Shape <|-- Circle
     Shape <|-- Line
     Shape <|-- Curve
+    CanCalculateArea <|.. Triangle : implements
+    CanCalculateArea <|.. Rectangle : implements
+    CanCalculateArea <|.. Circle : implements
     CanCalculateLength <|.. Line : implements
     CanCalculateLength <|.. Curve : implements
     Canvas "1" o-- "0..*" Shape : contains
@@ -97,10 +102,12 @@ classDiagram
     Line --> Point : end
 ```
 
-- **Shape** — abstract base class with `color` and `transparent` fields; declares abstract `draw()` and `area()` methods.
-- **Triangle / Rectangle / Circle / Line** — concrete subclasses that each implement their own `draw()` and `area()`.
-- **Canvas** — holds a list of shapes; can draw all of them and calculate the total area.
+- **Shape** — abstract base class with `color` and `transparent` fields; declares only abstract `draw()`. No `area()` — not all shapes have area.
+- **Triangle / Rectangle / Circle** — concrete subclasses that implement `draw()` and `CanCalculateArea`.
+- **Line / Curve** — concrete subclasses that implement `draw()` and `CanCalculateLength`. No area.
+- **Canvas** — holds a list of shapes; can draw all of them and calculate total area via `instanceof CanCalculateArea`.
 - **App** — entry point; creates test data and exercises the canvas.
+- **CanCalculateArea** — interface declaring `calculateArea()`; implemented by `Triangle`, `Rectangle`, and `Circle` (ISP: only shapes that actually have area).
 - **Curve** — concrete subclass of `Shape` that also implements `CanCalculateLength`; represents a circular arc with `radius` (float) and `angle` (int, degrees). `calculateLength()` returns `2 * π * r * (angle / 360)`.
 - **CanCalculateLength** — interface declaring `calculateLength()`; implemented by `Line` and `Curve`.
 - **Point** — `java.awt.Point`; holds integer `x`/`y` coordinates used by `Line`.

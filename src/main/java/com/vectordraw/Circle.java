@@ -1,6 +1,6 @@
 package com.vectordraw;
 
-public class Circle extends Shape {
+public class Circle extends Shape implements CanCalculateArea {
 
     private double radius;
 
@@ -15,7 +15,7 @@ public class Circle extends Shape {
     }
 
     @Override
-    public double area() {
+    public double calculateArea() {
         return Math.PI * radius * radius;
     }
 }

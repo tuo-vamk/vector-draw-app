@@ -28,9 +28,4 @@ public class Curve extends Shape implements CanCalculateLength {
     public void draw() {
         System.out.println("Drawing Curve..");
     }
-
-    @Override
-    public double area() {
-        return -1;
-    }
 }
