@@ -27,10 +27,11 @@ public class App {
         System.out.println("Total area from Canvas: " + canvas.totalArea());
 
         // 4) Loop through canvas and print length if shape can calculate it
-        System.out.println("\n== Line lengths ==");
+        System.out.println("\n== Lengths (CanCalculateLength) ==");
         for (Shape s : canvas.getShapes()) {
-            if (s instanceof CanCalculateLength hasLength) {
-                System.out.println("Line length: " + hasLength.calculateLength());
+            if (s instanceof CanCalculateLength) {
+                CanCalculateLength hasLength = (CanCalculateLength) s;
+                System.out.println(s.getClass().getSimpleName() + " length: " + hasLength.calculateLength());
             }
         }
     }
@@ -64,5 +65,13 @@ public class App {
 
         Line l4 = new Line(new java.awt.Point(0, 0), new java.awt.Point(3, 4), "gray", true);
         shapes.add(l4);
+
+        // Curve (arc): radius=5, angle=90 → quarter circle
+        Curve curve1 = new Curve(5.0f, 90, "teal", false);
+        shapes.add(curve1);
+
+        // Curve (arc): radius=10, angle=180 → semicircle
+        Curve curve2 = new Curve(10.0f, 180, "pink", true);
+        shapes.add(curve2);
     }
 }
