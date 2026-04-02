@@ -2,16 +2,24 @@ package com.vectordraw;
 
 import java.awt.Point;
 
-public class Line extends Shape implements CanCalculateLength {
-        private Point start;
-        private Point end;
+public class Line implements Shape, CanCalculateLength {
 
-        public Line(Point start, Point end, String color, boolean transparent) {
-            super(color, transparent);
-            this.start = start;
-            this.end = end;
-        }
+    private ShapeProperties props;
+    private Point start;
+    private Point end;
 
+    public Line(Point start, Point end, String color, boolean transparent) {
+        this.props = new ShapeProperties(color, transparent);
+        this.start = start;
+        this.end = end;
+    }
+
+    @Override public String getColor() { return props.getColor(); }
+    @Override public void setColor(String color) { props.setColor(color); }
+    @Override public boolean isTransparent() { return props.isTransparent(); }
+    @Override public void setTransparent(boolean transparent) { props.setTransparent(transparent); }
+
+    @Override
     public double calculateLength() {
         int dx = end.x - start.x;
         int dy = end.y - start.y;

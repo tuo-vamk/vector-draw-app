@@ -14,18 +14,10 @@ public class App {
         System.out.println("== Drawing all shapes ==");
         canvas.drawAll();
 
-        // 3) Loop through canvas and print subtype + area for each shape
-        System.out.println("\n== Shape types and areas ==");
-        double totalArea = 0;
-        for (Drawable s : canvas.getShapes()) {
-            if (s instanceof CanCalculateArea) {
-                double area = ((CanCalculateArea) s).calculateArea();
-                System.out.println(s.getClass().getSimpleName() + " area: " + area);
-                totalArea += area;
-            }
-        }
-        System.out.println("Total area from Main(): " + totalArea);
-        System.out.println("Total area from Canvas: " + canvas.totalArea());
+        // 3) Calculate and print total area via AreaCalculatorService
+        AreaCalculatorService areaService = new AreaCalculatorService();
+        System.out.println("\n== Total area ==");
+        System.out.println("Total area: " + areaService.totalArea(canvas.getShapes()));
 
         // 4) Loop through canvas and print length if shape can calculate it
         System.out.println("\n== Lengths (CanCalculateLength) ==");

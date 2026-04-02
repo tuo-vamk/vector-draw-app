@@ -27,14 +27,4 @@ public class Canvas {
             shape.draw();
         }
     }
-
-    public double totalArea() {
-        double total = 0;
-        for (Drawable shape : shapes) {
-            if (shape instanceof CanCalculateArea) {
-                total += ((CanCalculateArea) shape).calculateArea();
-            }
-        }
-        return total;
-    }
 }

@@ -1,6 +1,6 @@
 # Vector Draw App
 
-A simple object-oriented Java application demonstrating inheritance and polymorphism through geometric shapes drawn on a canvas.
+A Java application demonstrating **composition over inheritance**, **SOLID principles**, and interface-based design through geometric shapes drawn on a canvas.
 
 ## Class Structure
 
@@ -12,14 +12,21 @@ classDiagram
     }
 
     class Shape {
-        <<abstract>>
-        -String color
-        -boolean transparent
+        <<interface>>
         +getColor() String
         +setColor(String)
         +isTransparent() boolean
         +setTransparent(boolean)
-        +draw()*
+    }
+
+    class ShapeProperties {
+        -String color
+        -boolean transparent
+        +ShapeProperties(String, boolean)
+        +getColor() String
+        +setColor(String)
+        +isTransparent() boolean
+        +setTransparent(boolean)
     }
 
     class CanCalculateArea {
@@ -28,6 +35,7 @@ classDiagram
     }
 
     class Triangle {
+        -ShapeProperties props
         -double base
         -double height
         +Triangle(double, double, String, boolean)
@@ -36,6 +44,7 @@ classDiagram
     }
 
     class Rectangle {
+        -ShapeProperties props
         -double width
         -double height
         +Rectangle(double, double, String, boolean)
@@ -44,6 +53,7 @@ classDiagram
     }
 
     class Circle {
+        -ShapeProperties props
         -double radius
         +Circle(double, String, boolean)
         +draw()
@@ -56,6 +66,7 @@ classDiagram
     }
 
     class Line {
+        -ShapeProperties props
         -Point start
         -Point end
         +Line(Point, Point, String, boolean)
@@ -64,6 +75,7 @@ classDiagram
     }
 
     class Curve {
+        -ShapeProperties props
         -float radius
         -int angle
         +Curve(float, int, String, boolean)
@@ -77,7 +89,10 @@ classDiagram
         +addShape(Drawable)
         +removeShape(Drawable)
         +drawAll()
-        +totalArea() double
+    }
+
+    class AreaCalculatorService {
+        +totalArea(List~Drawable~) double
     }
 
     class App {
@@ -91,32 +106,40 @@ classDiagram
         +int y
     }
 
-    Drawable <|.. Shape : implements
-    Shape <|-- Triangle
-    Shape <|-- Rectangle
-    Shape <|-- Circle
-    Shape <|-- Line
-    Shape <|-- Curve
+    Drawable <|.. Shape : extends
+    Shape <|.. Triangle : implements
+    Shape <|.. Rectangle : implements
+    Shape <|.. Circle : implements
+    Shape <|.. Line : implements
+    Shape <|.. Curve : implements
     CanCalculateArea <|.. Triangle : implements
     CanCalculateArea <|.. Rectangle : implements
     CanCalculateArea <|.. Circle : implements
     CanCalculateLength <|.. Line : implements
     CanCalculateLength <|.. Curve : implements
+    Triangle *-- ShapeProperties : has
+    Rectangle *-- ShapeProperties : has
+    Circle *-- ShapeProperties : has
+    Line *-- ShapeProperties : has
+    Curve *-- ShapeProperties : has
     Canvas "1" o-- "0..*" Drawable : contains
     App ..> Canvas : uses
+    App ..> AreaCalculatorService : uses
+    AreaCalculatorService ..> CanCalculateArea : checks
     Line --> Point : start
     Line --> Point : end
 ```
 
-- **Drawable** — interface declaring `draw()`; the abstraction `Canvas` and `App` depend on (DIP). `Shape` implements it.
-- **Shape** — abstract base class with `color` and `transparent` fields; implements `Drawable`, keeps `draw()` abstract. No `area()` — not all shapes have area.
-- **Triangle / Rectangle / Circle** — concrete subclasses that implement `draw()` and `CanCalculateArea`.
-- **Line / Curve** — concrete subclasses that implement `draw()` and `CanCalculateLength`. No area.
-- **Canvas** — holds `ArrayList<Drawable>`; depends only on the `Drawable` abstraction (DIP). Draws all items and calculates total area via `instanceof CanCalculateArea`.
-- **App** — entry point; works with `ArrayList<Drawable>` — decoupled from `Shape`.
-- **CanCalculateArea** — interface declaring `calculateArea()`; implemented by `Triangle`, `Rectangle`, and `Circle` (ISP: only shapes that actually have area).
-- **Curve** — concrete subclass of `Shape` that also implements `CanCalculateLength`; represents a circular arc with `radius` (float) and `angle` (int, degrees). `calculateLength()` returns `2 * π * r * (angle / 360)`.
-- **CanCalculateLength** — interface declaring `calculateLength()`; implemented by `Line` and `Curve`.
+- **Drawable** — interface declaring `draw()`; the broadest abstraction. `Canvas` and `App` depend only on this (DIP).
+- **Shape** — interface extending `Drawable`; adds the color/transparency contract. Concrete classes implement this — no abstract class needed.
+- **ShapeProperties** — plain data class holding `color` and `transparent`. Composed into each concrete shape (composition over inheritance). Shared state without shared class hierarchy.
+- **Triangle / Rectangle / Circle** — implement `Shape` and `CanCalculateArea`; each *has a* `ShapeProperties` instead of extending an abstract class.
+- **Line / Curve** — implement `Shape` and `CanCalculateLength`; each *has a* `ShapeProperties`. No area.
+- **Canvas** — holds `ArrayList<Drawable>`; single responsibility: hold and draw. No area logic (SRP).
+- **AreaCalculatorService** — single responsibility: sum areas from any `List<Drawable>`. Decoupled from `Canvas` (SRP). Works for any list of drawables from any source.
+- **App** — orchestrates: wires canvas, service, and test data. Delegates all logic to the right class.
+- **CanCalculateArea** — capability interface; implemented only by shapes that actually have area (ISP).
+- **CanCalculateLength** — capability interface; implemented only by shapes that have length (ISP).
 - **Point** — `java.awt.Point`; holds integer `x`/`y` coordinates used by `Line`.
 
 ---
