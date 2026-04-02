@@ -11,14 +11,6 @@ classDiagram
         +draw()
     }
 
-    class Shape {
-        <<interface>>
-        +getColor() String
-        +setColor(String)
-        +isTransparent() boolean
-        +setTransparent(boolean)
-    }
-
     class ShapeProperties {
         -String color
         -boolean transparent
@@ -85,9 +77,10 @@ classDiagram
 
     class Canvas {
         -ArrayList~Drawable~ shapes
-        +getShapes() ArrayList~Drawable~
+        +Canvas()
+        +Canvas(List~Drawable~)
+        +getShapes() List~Drawable~
         +addShape(Drawable)
-        +removeShape(Drawable)
         +drawAll()
     }
 
@@ -95,9 +88,13 @@ classDiagram
         +totalArea(List~Drawable~) double
     }
 
+    class LengthCalculatorService {
+        +printLengths(List~Drawable~)
+    }
+
     class App {
         +main(String[])$
-        +createTestData(ArrayList~Drawable~)$
+        +createTestData() List~Drawable~$
     }
 
     class Point {
@@ -106,12 +103,11 @@ classDiagram
         +int y
     }
 
-    Drawable <|.. Shape : extends
-    Shape <|.. Triangle : implements
-    Shape <|.. Rectangle : implements
-    Shape <|.. Circle : implements
-    Shape <|.. Line : implements
-    Shape <|.. Curve : implements
+    Drawable <|.. Triangle : implements
+    Drawable <|.. Rectangle : implements
+    Drawable <|.. Circle : implements
+    Drawable <|.. Line : implements
+    Drawable <|.. Curve : implements
     CanCalculateArea <|.. Triangle : implements
     CanCalculateArea <|.. Rectangle : implements
     CanCalculateArea <|.. Circle : implements
@@ -125,19 +121,21 @@ classDiagram
     Canvas "1" o-- "0..*" Drawable : contains
     App ..> Canvas : uses
     App ..> AreaCalculatorService : uses
+    App ..> LengthCalculatorService : uses
     AreaCalculatorService ..> CanCalculateArea : checks
+    LengthCalculatorService ..> CanCalculateLength : checks
     Line --> Point : start
     Line --> Point : end
 ```
 
 - **Drawable** — interface declaring `draw()`; the broadest abstraction. `Canvas` and `App` depend only on this (DIP).
-- **Shape** — interface extending `Drawable`; adds the color/transparency contract. Concrete classes implement this — no abstract class needed.
 - **ShapeProperties** — plain data class holding `color` and `transparent`. Composed into each concrete shape (composition over inheritance). Shared state without shared class hierarchy.
-- **Triangle / Rectangle / Circle** — implement `Shape` and `CanCalculateArea`; each *has a* `ShapeProperties` instead of extending an abstract class.
-- **Line / Curve** — implement `Shape` and `CanCalculateLength`; each *has a* `ShapeProperties`. No area.
-- **Canvas** — holds `ArrayList<Drawable>`; single responsibility: hold and draw. No area logic (SRP).
+- **Triangle / Rectangle / Circle** — implement `Drawable` and `CanCalculateArea`; each *has a* `ShapeProperties` instead of extending an abstract class.
+- **Line / Curve** — implement `Drawable` and `CanCalculateLength`; each *has a* `ShapeProperties`. No area.
+- **Canvas** — holds `ArrayList<Drawable>`; single responsibility: hold and draw. No area or length logic (SRP). Accepts an optional initial list via a second constructor.
 - **AreaCalculatorService** — single responsibility: sum areas from any `List<Drawable>`. Decoupled from `Canvas` (SRP). Works for any list of drawables from any source.
-- **App** — orchestrates: wires canvas, service, and test data. Delegates all logic to the right class.
+- **LengthCalculatorService** — single responsibility: print lengths from any `List<Drawable>`. Works for any shape implementing `CanCalculateLength`.
+- **App** — orchestrates: wires canvas, services, and test data. Delegates all logic to the right class.
 - **CanCalculateArea** — capability interface; implemented only by shapes that actually have area (ISP).
 - **CanCalculateLength** — capability interface; implemented only by shapes that have length (ISP).
 - **Point** — `java.awt.Point`; holds integer `x`/`y` coordinates used by `Line`.
@@ -270,15 +268,27 @@ cd vector-draw-app
 mvn compile exec:java "-Dexec.mainClass=com.vectordraw.App"
 ```
 
-Expected output something like:
+Expected output:
 ```
-=== Drawing all shapes on canvas ===
-Drawing Circle [radius=5.00, color=Red, transparent=false]
-Drawing Rectangle [width=4.00, height=6.00, color=Blue, transparent=true]
-Drawing Triangle [base=3.00, height=8.00, color=Green, transparent=false]
-Drawing Circle [radius=2.50, color=Yellow, transparent=true]
-Drawing Rectangle [width=10.00, height=3.00, color=Black, transparent=false]
-Drawing Triangle [base=7.00, height=4.00, color=Purple, transparent=true]
-====================================
-Total area of all shapes: 178.17
+== Drawing all shapes ==
+Drawing Triangle [color=red, transparent=false]
+Drawing Rectangle [color=blue, transparent=false]
+Drawing Circle [color=green, transparent=true]
+Drawing Line [color=black, transparent=false]
+Drawing Line [color=purple, transparent=false]
+Drawing Line [color=orange, transparent=false]
+Drawing Line [color=gray, transparent=true]
+Drawing Curve [color=teal, transparent=false]
+Drawing Curve [color=pink, transparent=true]
+
+== Total area ==
+Total area: 23.068583470577035
+
+== Lengths (CanCalculateLength) ==
+Line length: 14.142135623730951
+Line length: 20.0
+Line length: 12.0
+Line length: 5.0
+Curve length: 7.853981633974483
+Curve length: 31.41592653589793
 ```
