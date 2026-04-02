@@ -1,6 +1,8 @@
 package com.vectordraw;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Canvas {
 
@@ -10,16 +12,16 @@ public class Canvas {
         shapes = new ArrayList<>();
     }
 
-    public ArrayList<Drawable> getShapes() {
-        return shapes;
+    public Canvas(List<Drawable> initialShapes) {
+        shapes = new ArrayList<>(initialShapes);
     }
 
     public void addShape(Drawable shape) {
         shapes.add(shape);
     }
 
-    public void removeShape(Drawable shape) {
-        shapes.remove(shape);
+    public List<Drawable> getShapes() {
+        return Collections.unmodifiableList(shapes);
     }
 
     public void drawAll() {

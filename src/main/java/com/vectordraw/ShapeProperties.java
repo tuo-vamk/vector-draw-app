@@ -25,4 +25,9 @@ public class ShapeProperties {
     public void setTransparent(boolean transparent) {
         this.transparent = transparent;
     }
+
+    @Override
+    public String toString() {
+        return "color=" + color + ", transparent=" + transparent;
+    }
 }

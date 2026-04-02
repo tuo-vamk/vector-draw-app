@@ -1,6 +1,6 @@
 package com.vectordraw;
 
-public class Curve implements Shape, CanCalculateLength {
+public class Curve implements Drawable, CanCalculateLength {
 
     private ShapeProperties props;
     private float radius;
@@ -11,11 +11,6 @@ public class Curve implements Shape, CanCalculateLength {
         this.radius = radius;
         this.angle = angle;
     }
-
-    @Override public String getColor() { return props.getColor(); }
-    @Override public void setColor(String color) { props.setColor(color); }
-    @Override public boolean isTransparent() { return props.isTransparent(); }
-    @Override public void setTransparent(boolean transparent) { props.setTransparent(transparent); }
 
     public float getRadius() {
         return radius;
@@ -32,6 +27,6 @@ public class Curve implements Shape, CanCalculateLength {
 
     @Override
     public void draw() {
-        System.out.println("Drawing Curve..");
+        System.out.println("Drawing Curve [" + props + "]");
     }
 }

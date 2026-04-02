@@ -1,6 +1,6 @@
 package com.vectordraw;
 
-public class Triangle implements Shape, CanCalculateArea {
+public class Triangle implements Drawable, CanCalculateArea {
 
     private ShapeProperties props;
     private double base;
@@ -12,14 +12,9 @@ public class Triangle implements Shape, CanCalculateArea {
         this.height = height;
     }
 
-    @Override public String getColor() { return props.getColor(); }
-    @Override public void setColor(String color) { props.setColor(color); }
-    @Override public boolean isTransparent() { return props.isTransparent(); }
-    @Override public void setTransparent(boolean transparent) { props.setTransparent(transparent); }
-
     @Override
     public void draw() {
-        System.out.println("Drawing Triangle..");
+        System.out.println("Drawing Triangle [" + props + "]");
     }
 
     @Override

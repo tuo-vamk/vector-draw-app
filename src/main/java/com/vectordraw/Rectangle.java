@@ -1,6 +1,6 @@
 package com.vectordraw;
 
-public class Rectangle implements Shape, CanCalculateArea {
+public class Rectangle implements Drawable, CanCalculateArea {
 
     private ShapeProperties props;
     private double width;
@@ -12,14 +12,9 @@ public class Rectangle implements Shape, CanCalculateArea {
         this.height = height;
     }
 
-    @Override public String getColor() { return props.getColor(); }
-    @Override public void setColor(String color) { props.setColor(color); }
-    @Override public boolean isTransparent() { return props.isTransparent(); }
-    @Override public void setTransparent(boolean transparent) { props.setTransparent(transparent); }
-
     @Override
     public void draw() {
-        System.out.println("Drawing Rectangle..");
+        System.out.println("Drawing Rectangle [" + props + "]");
     }
 
     @Override

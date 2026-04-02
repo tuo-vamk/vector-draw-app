@@ -1,70 +1,40 @@
 package com.vectordraw;
-    
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class App {
 
     public static void main(String[] args) {
-        Canvas canvas = new Canvas();
-
-        // 1) Generate test data into the canvas' shape list
-        createTestData(canvas.getShapes());
+        // Canvas initialised with demo data via constructor
+        Canvas canvas = new Canvas(createTestData());
 
         // 2) Draw all shapes
         System.out.println("== Drawing all shapes ==");
         canvas.drawAll();
 
-        // 3) Calculate and print total area via AreaCalculatorService
+        // 3) Total area via AreaCalculatorService
         AreaCalculatorService areaService = new AreaCalculatorService();
         System.out.println("\n== Total area ==");
         System.out.println("Total area: " + areaService.totalArea(canvas.getShapes()));
 
-        // 4) Loop through canvas and print length if shape can calculate it
+        // 4) Lengths via LengthCalculatorService
+        LengthCalculatorService lengthService = new LengthCalculatorService();
         System.out.println("\n== Lengths (CanCalculateLength) ==");
-        for (Drawable s : canvas.getShapes()) {
-            if (s instanceof CanCalculateLength) {
-                CanCalculateLength hasLength = (CanCalculateLength) s;
-                System.out.println(s.getClass().getSimpleName() + " length: " + hasLength.calculateLength());
-            }
-        }
+        lengthService.printLengths(canvas.getShapes());
     }
 
-    /**
-     * Populates the provided List<Shape> with some test data.
-     * This keeps test data creation separate from main logic.
-     */
-    public static void createTestData(ArrayList<Drawable> shapes) {
-        // Triangle
-        Triangle t = new Triangle(3.0, 4.0, "red", false);
-        shapes.add(t);
-
-        // Rectangle
-        Rectangle r = new Rectangle(2.0, 5.0, "blue", false);
-        shapes.add(r);
-
-        // Circle
-        Circle c = new Circle(1.5, "green", true);
-        shapes.add(c);
-
-        // Lines
-        Line l1 = new Line(new java.awt.Point(0, 0), new java.awt.Point(10, 10), "black", false);
-        shapes.add(l1);
-
-        Line l2 = new Line(new java.awt.Point(5, 0), new java.awt.Point(5, 20), "purple", false);
-        shapes.add(l2);
-
-        Line l3 = new Line(new java.awt.Point(-3, 4), new java.awt.Point(9, 4), "orange", false);
-        shapes.add(l3);
-
-        Line l4 = new Line(new java.awt.Point(0, 0), new java.awt.Point(3, 4), "gray", true);
-        shapes.add(l4);
-
-        // Curve (arc): radius=5, angle=90 → quarter circle
-        Curve curve1 = new Curve(5.0f, 90, "teal", false);
-        shapes.add(curve1);
-
-        // Curve (arc): radius=10, angle=180 → semicircle
-        Curve curve2 = new Curve(10.0f, 180, "pink", true);
-        shapes.add(curve2);
+    public static List<Drawable> createTestData() {
+        List<Drawable> shapes = new ArrayList<>();
+        shapes.add(new Triangle(3.0, 4.0, "red", false));
+        shapes.add(new Rectangle(2.0, 5.0, "blue", false));
+        shapes.add(new Circle(1.5, "green", true));
+        shapes.add(new Line(new java.awt.Point(0, 0), new java.awt.Point(10, 10), "black", false));
+        shapes.add(new Line(new java.awt.Point(5, 0), new java.awt.Point(5, 20), "purple", false));
+        shapes.add(new Line(new java.awt.Point(-3, 4), new java.awt.Point(9, 4), "orange", false));
+        shapes.add(new Line(new java.awt.Point(0, 0), new java.awt.Point(3, 4), "gray", true));
+        shapes.add(new Curve(5.0f, 90, "teal", false));
+        shapes.add(new Curve(10.0f, 180, "pink", true));
+        return shapes;
     }
 }

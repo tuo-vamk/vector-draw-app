@@ -1,6 +1,6 @@
 package com.vectordraw;
 
-public class Circle implements Shape, CanCalculateArea {
+public class Circle implements Drawable, CanCalculateArea {
 
     private ShapeProperties props;
     private double radius;
@@ -10,14 +10,9 @@ public class Circle implements Shape, CanCalculateArea {
         this.radius = radius;
     }
 
-    @Override public String getColor() { return props.getColor(); }
-    @Override public void setColor(String color) { props.setColor(color); }
-    @Override public boolean isTransparent() { return props.isTransparent(); }
-    @Override public void setTransparent(boolean transparent) { props.setTransparent(transparent); }
-
     @Override
     public void draw() {
-        System.out.println("Drawing Circle..");
+        System.out.println("Drawing Circle [" + props + "]");
     }
 
     @Override
